@@ -9,7 +9,8 @@ enable_ipv6
 sysctl -p
 ```
 En `cat /etc/sysctl.conf` deveria estar `net.ipv6.conf.all.disable_ipv6 = 0` en el archivo.
-2. Permitimos elacceso al vps con password
+
+2. Permitimos el acceso al vps con password
 _Abrimos el archivo a modificar con nano_
 ```
 nano /etc/ssh/sshd_config
