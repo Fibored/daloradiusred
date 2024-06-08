@@ -8,7 +8,7 @@ Sistema daloradius con algunas modificaciones en sus archivos para mejorarlo, ta
 enable_ipv6
 sysctl -p
 ```
-_En `cat /etc/sysctl.conf` deveria estar `net.ipv6.conf.all.disable_ipv6 = 0`_
+En `cat /etc/sysctl.conf` deveria estar `net.ipv6.conf.all.disable_ipv6 = 0` en el archivo.
 2. Permitimos elacceso al vps con password
 _Abrimos el archivo a modificar con nano_
 ```
