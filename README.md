@@ -1,3 +1,4 @@
+## Instalacion Daloradius en debian 11
 1. Activar ipv6
 ```
 enable_ipv6
@@ -197,21 +198,25 @@ Agregamos las siguientes lineas
 #limpieza de fichas usadas vigencia de 11 dias elegida en el script
 0 22 * * * sudo bash /root/scripts/limpiaPausados.sh
 ```
-Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 
+Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
+```
 \mv /root/daloradiusred/root/scripts /root/scripts/
 \mv /root/daloradiusred/root/backupdb /root/backupdb/
 \mv /root/daloradiusred/docker /root/docker/
+```
 
 - Modificamos los passwords de la base de datos en los scripts la cual por default es 84Pass@.
 podemos utilizar el siguiente comando para reemplazarlo por el password que elegistes ejemplo 84Elij@ .
 
 - Primero buscamos lo que queremos cambiar, anotamos los archivos donde se encuentra
-
+```
 grep -rl "84Pass@" /var
 grep -rl "84Pass@" /etc
+```
 
 - Ahora cambiamos esa palabra por la que nosotros decidamos.
+```
 sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
 sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
 sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/SimpleAuth.php"
@@ -219,10 +224,12 @@ sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
 
 
 sed -i 's/84Uniq@/84Pass@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
+```
 
 Encontraremos tambien las configuracion para desplegar contenedores de unifi, omada, wireguard con pihole unbound.
 
 ### Acceso a daloradius
+```
 Iniciar sesion
 WEB: IP/daloradius
 Usuario: administrator
@@ -230,16 +237,21 @@ Pass: 84Uniq@
 ### Acceso a wireguard
 Acceso = http://IP:51821/
 password = 84Uniq@
+```
 
 ### Acceso pihole
 Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
+```
 acceso = 10.2.0.100/admin
 password= 84Uniq@
-
+```
 
 - Respaldo carpeta html completa
+```
 cd /var/www
 tar -zcvf html.tar.gz html
 Descomprimir con
 cd /var/www/html
 tar -xf html.tar.gz
+```
+
