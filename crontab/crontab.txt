@@ -1,0 +1,4 @@
+#Agregar a crontab -e lo siguiente
+0 10 * * * sudo bash /root/scripts/backupdbradius.sh
+0 20 * * * sudo bash /root/scripts/limpiaCorridos.sh
+0 22 * * * sudo bash /root/scripts/limpiaPausados.sh

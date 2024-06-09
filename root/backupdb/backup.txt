@@ -1,0 +1,1 @@
+#Aqui se crearan las copias de seguridad , automaticamente con el script lanzado por tiempo en el crontab.
