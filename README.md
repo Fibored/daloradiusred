@@ -236,8 +236,9 @@ Usuario: administrator
 Pass: 84Uniq@
 ### Acceso a wireguard
 Acceso = http://IP:51821/
-password = 84Uniq@
+password = 84Uniq
 ```
+
 
 ### Acceso pihole
 Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
