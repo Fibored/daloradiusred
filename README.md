@@ -239,6 +239,27 @@ Acceso = http://IP:51821/
 password = 84Uniq
 ```
 
+### Instalacion wireguard pihole unbound
+- Entramos a la carpeta y editamos el archivo de configuracion
+```
+cd /root/docker/piwiunbound/
+nano docker-compose.yml
+```
+
+En este caso solo cambiaremos el password de acceso de wireguard y pihole, asi como la ip de nuestro servidor, en las lineas.
+```
+ - WG_HOST=45.234.34.54
+ - PASSWORD=84Uniq@
+
+WEBPASSWORD: "84Uniq@"
+```
+
+Guardamos los cambios y ejecutamos el contenedor, teniendo ya instalado docker y docker compose.
+```
+docker-compose up -d
+```
+
+```
 
 ### Acceso pihole
 Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
