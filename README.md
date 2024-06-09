@@ -56,13 +56,13 @@ Te apareceran algunas opciones de configuracion.
 ```
 # enter
 # Disallow root login remotely? [Y/n] n
-# password usada aqui es 84Uniq@ ,utiliza el tuyo
+# password usada aqui es 84Pass@ ,utiliza el tuyo, recuerda cuando veas 84Pass@ cambiarlo.
 ```
-- Creamos una base de datos, cambiamos `84Uniq@` por tu clave
+- Creamos una base de datos, cambiamos `84Pass@` por tu clave
 ```
 mysql -u root -p
 CREATE DATABASE radius;
-GRANT ALL ON radius.* TO radius@localhost IDENTIFIED BY "84Uniq@";
+GRANT ALL ON radius.* TO radius@localhost IDENTIFIED BY "84Pass@";
 FLUSH PRIVILEGES;
 quit;
 ```
@@ -84,23 +84,24 @@ git clone https://github.com/Fibored/daloradiusred.git daloradiusred
 
 - Movemos la carpeta daloradius a html del servidor
 ```
-\mv /root/daloradiusred/daloradius /var/www/html/
+\mv /root/daloradiusred/server/daloradius /var/www/html/
+\mv /root/daloradiusred/server/print /var/www/html/
 ```
 
 - Remplazamos unos archivos por algunos editados, puedes hacer una comparacion de cambios con algun software en linea, en el mismo archivo hay una leyenda donde se cambio que dice: Wirisp cambiar aqui.
 
 ```
-\mv /root/daloradiusred/dalomv/radiusd.conf /etc/freeradius/3.0/radiusd.conf
-\mv /root/daloradiusred/dalomv/exten-radius_server_info.php /var/www/html/daloradius/library/exten-radius_server_info.php
-\mv /root/daloradiusred/dalomv/default /etc/freeradius/3.0/sites-enabled/default
-\mv /root/daloradiusred/dalomv/sqlcounter /etc/freeradius/3.0/mods-available/sqlcounter
-\mv /root/daloradiusred/dalomv/access_period.conf /etc/freeradius/3.0/mods-config/sql/counter/mysql/access_period.conf
-\mv /root/daloradiusred/dalomv/quotalimit.conf /etc/freeradius/3.0/mods-config/sql/counter/mysql/quotalimit.conf
-\mv /root/daloradiusred/dalomv/eap /etc/freeradius/3.0/mods-available/eap
-\mv /root/daloradiusred/dalomv/queries.conf /etc/freeradius/3.0/mods-config/sql/main/mysql/queries.conf
-\mv /root/daloradiusred/dalomv/radutmp /etc/freeradius/3.0/mods-enabled/radutmp
-\mv /root/daloradiusred/dalomv/sql /etc/freeradius/3.0/mods-available/sql
-\mv /root/daloradiusred/dalomv/daloradius.conf.php /var/www/html/daloradius/library/daloradius.conf.php
+\mv /root/daloradiusred/root/dalomv/radiusd.conf /etc/freeradius/3.0/radiusd.conf
+\mv /root/daloradiusred/root/dalomv/exten-radius_server_info.php /var/www/html/daloradius/library/exten-radius_server_info.php
+\mv /root/daloradiusred/root/dalomv/default /etc/freeradius/3.0/sites-enabled/default
+\mv /root/daloradiusred/root/dalomv/sqlcounter /etc/freeradius/3.0/mods-available/sqlcounter
+\mv /root/daloradiusred/root/dalomv/access_period.conf /etc/freeradius/3.0/mods-config/sql/counter/mysql/access_period.conf
+\mv /root/daloradiusred/root/dalomv/quotalimit.conf /etc/freeradius/3.0/mods-config/sql/counter/mysql/quotalimit.conf
+\mv /root/daloradiusred/root/dalomv/eap /etc/freeradius/3.0/mods-available/eap
+\mv /root/daloradiusred/root/dalomv/queries.conf /etc/freeradius/3.0/mods-config/sql/main/mysql/queries.conf
+\mv /root/daloradiusred/root/dalomv/radutmp /etc/freeradius/3.0/mods-enabled/radutmp
+\mv /root/daloradiusred/root/dalomv/sql /etc/freeradius/3.0/mods-available/sql
+\mv /root/daloradiusred/root/dalomv/daloradius.conf.php /var/www/html/daloradius/library/daloradius.conf.php
 ```
 
 - Damos permisos necesarios
@@ -130,16 +131,6 @@ mysql -u root -p radius < contrib/db/mysql-daloradius.sql
 cd
 ```
 
-- Editamos el archivo, cambiando el password `84Uniq@`
-
-```
-nano /etc/freeradius/3.0/mods-enabled/sql
-```
-
-```
-nano /var/www/html/daloradius/library/daloradius.conf.php
-```
-
 - Colocamos zona horaria
 
 ```
@@ -154,11 +145,15 @@ pear install MDB2
 pear channel-update pear.php.net
 ```
 
+- Agregamos el password a nuestra base de datos, siendo `84Pass@` la default y `84Elij@` la elegida por ti.
 
+```
+sed -i 's/84Pass@/84Elij@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
+```
 - Restauramos base de datos
 
 ```
-mysql -p -u root radius < /root/daloradiusred/dalomv/base.sql
+mysql -p -u root radius < /root/daloradiusred/root/dalomv/base.sql
 ```
 
 - reiniciamos los servicios
@@ -174,6 +169,7 @@ chmod 777  /var/log/syslog
 chmod 777 /var/log/freeradius
 #chmod 755 /var/log/radius/
 #chmod 644 /var/log/radius/radius.log
+touch /var/log/messages
 chmod 644 /var/log/messages
 #chmod 644 /var/log/dmesg
 touch /tmp/daloradius.log
@@ -203,9 +199,47 @@ Agregamos las siguientes lineas
 ```
 Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 
-\mv /root/daloradiusred/scripts /root/scripts
-\mv /root/daloradiusred/backupdb /root/backupdb
+\mv /root/daloradiusred/root/scripts /root/scripts/
+\mv /root/daloradiusred/root/backupdb /root/backupdb/
+\mv /root/daloradiusred/docker /root/docker/
 
-Checamos y modificamos
+- Modificamos los passwords de la base de datos en los scripts la cual por default es 84Pass@.
+podemos utilizar el siguiente comando para reemplazarlo por el password que elegistes ejemplo 84Elij@ .
+
+- Primero buscamos lo que queremos cambiar, anotamos los archivos donde se encuentra
+
+grep -rl "84Pass@" /var
+grep -rl "84Pass@" /etc
+
+- Ahora cambiamos esa palabra por la que nosotros decidamos.
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/SimpleAuth.php"
+sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
 
 
+sed -i 's/84Uniq@/84Pass@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
+
+Encontraremos tambien las configuracion para desplegar contenedores de unifi, omada, wireguard con pihole unbound.
+
+### Acceso a daloradius
+Iniciar sesion
+WEB: IP/daloradius
+Usuario: administrator
+Pass: 84Uniq@
+### Acceso a wireguard
+Acceso = http://IP:51821/
+password = 84Uniq@
+
+### Acceso pihole
+Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
+acceso = 10.2.0.100/admin
+password= 84Uniq@
+
+
+- Respaldo carpeta html completa
+cd /var/www
+tar -zcvf html.tar.gz html
+Descomprimir con
+cd /var/www/html
+tar -xf html.tar.gz
