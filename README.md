@@ -149,7 +149,7 @@ pear channel-update pear.php.net
 - Agregamos el password a nuestra base de datos, siendo `84Pass@` la default y `84Elij@` la elegida por ti.
 
 ```
-sed -i 's/84Pass@/84Elij@/g' "/root/daloradiusred/root/dalomv/base.sql"
+sed -i 's/84Uniq@/84Elij@/g' "/root/daloradiusred/root/dalomv/base.sql"
 ```
 - Restauramos base de datos
 
@@ -203,7 +203,10 @@ systemctl status apache2
 systemctl status freeradius
 ```
 
-- Ingresar a daloradius por la direccion `http://IP/daloradius` con usuario `administrator` y clave  `84Uniq@`
+- Ingresar a daloradius por la direccion `http://IP/daloradius` con usuario `administrator` y clave elegida  `84Elij@` puedes cambiar el usuario `Rivera` de inicio con.
+```
+sed -i 's/Rivera/Myusuario/g' "/var/www/html/daloradius/login.php"
+```
 _Si hay error de puertos Es necesario que se abran los puertos en el vps de administracion 1812,1813,3306,6813,80,8080,443_
 
 8. Agregando scripts y crontab para mantenimiento.
@@ -256,7 +259,7 @@ Encontraremos tambien las configuracion para desplegar contenedores de unifi, om
 Iniciar sesion
 WEB: IP/daloradius
 Usuario: administrator
-Pass: 84Uniq@
+Pass: 84Elij@
 ```
 Despues de acceder, nos dirijimos a `http://IP/daloradius/config-operators.php` para cambiar el password y usuarios.
 
