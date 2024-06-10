@@ -256,7 +256,7 @@ Encontraremos tambien las configuracion para desplegar contenedores de unifi, om
 Iniciar sesion
 WEB: IP/daloradius
 Usuario: administrator
-Pass: 84Uniq@
+Pass: admin
 ```
 Despues de acceder, nos dirijimos a `http://IP/daloradius/config-operators.php` para cambiar el password y usuarios.
 
