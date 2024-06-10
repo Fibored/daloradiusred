@@ -151,7 +151,8 @@ pear install MDB2
 pear channel-update pear.php.net
 ```
 
-- Agregamos el password a nuestra base de datos, siendo `84Pass@` la default y `84Elij@` la elegida por ti.
+> [!CAUTION]
+> Agregamos el password a nuestra base de datos, siendo `84Pass@` la default y `84Elij@` o que haz elegido.
 
 ```
 sed -i 's/84Uniq@/84Elij@/g' "/root/daloradiusred/root/dalomv/base.sql"
@@ -190,10 +191,11 @@ grep -rl "84Pass@" /etc
 > El siguiente codigo copia linea a linea ya que tienes que cambiar datos.
 
 ```
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/SimpleAuth.php"
-sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
+passwd="84Elij@"
+sed -i "s/84Pass@/$passwd/g" "/var/www/html/daloradius/library/daloradius.conf.php"
+sed -i "s/84Pass@/$passwd/g" "/var/www/html/print/index.php"
+sed -i "s/84Pass@/$passwd/g" "/var/www/html/print/SimpleAuth.php"
+sed -i "s/84Pass@/$passwd/g" "/etc/freeradius/3.0/mods-available/sql"
 
 ```
 
@@ -241,23 +243,25 @@ Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 
 - Para cambiarles el password a los scripts, recuerda que en vez de `84Elij@` necesitamos colocar el que elegimos.
 > [!CAUTION]
-> El siguiente codigo lanzalo linea a linea osea uno a uno ya que cambiaras a tu password
+> En el siguiente codigo coloca tu password en lugar de la variable 84Elij@.
 
 ```
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/rmanual/limpiamanual.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpiaCorridos.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpia7dCorridos.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/rmcreationdate.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/eliminabatch.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/rmuserinfofirst.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/removegroupname.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/eliminadb.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/listar/crearlista.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/backupdbradius.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleanradpostauth.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpiaPausados.sh"
-sed -i 's/84Pass@/84Elij@/g' "/root/scripts/radacct_trim.sh"
+passwd="84Elij@"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/rmanual/limpiamanual.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpiaCorridos.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpia7dCorridos.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleaner/rmcreationdate.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleaner/eliminabatch.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleaner/rmuserinfofirst.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleaner/removegroupname.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleaner/eliminadb.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/listar/crearlista.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/backupdbradius.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleanradpostauth.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpiaPausados.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/radacct_trim.sh"
 ```
+
 
 Encontraremos tambien las configuracion para desplegar contenedores de unifi, omada, wireguard con pihole unbound.
 
@@ -314,10 +318,14 @@ docker -v
 cd /root/docker/piwiunbound/
 cat docker-compose.yml
 ```
-Para cambiar el password y la Ip del servidor suponiendo que es `45.143.18.92`
+- Para cambiar el password y la Ip del servidor suponiendo que es `45.143.18.92`
 
 ```
-sed -i 's/84Pass@/84Elij@/g' "docker-compose.yml"
+passwd="84Elij@"
+sed -i "s/84Pass@/$passwd/g" "docker-compose.yml"
+```
+- Para el servidor o ip cambialo.
+```
 sed -i 's/MyIpServer/45.143.18.92/g' "docker-compose.yml"
 ```
 
