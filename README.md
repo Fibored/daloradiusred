@@ -47,7 +47,9 @@ _Actualizamos el Sistema_
 ```
 apt -y update
 ```
-5. Instalacion de Mariadb, agregar linea por linea al terminal.
+5. Instalacion de Mariadb.
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno.
 ```
 apt install mariadb-server mysqltuner -y
 systemctl start mysql.service
@@ -60,6 +62,8 @@ Te apareceran algunas opciones de configuracion.
 # password usada aqui es 84Pass@ ,utiliza el tuyo, recuerda cuando veas 84Pass@ cambiarlo.
 ```
 - Creamos una base de datos, cambiamos `84Pass@` por tu clave
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno.
 ```
 mysql -u root -p
 CREATE DATABASE radius;
@@ -68,6 +72,8 @@ FLUSH PRIVILEGES;
 quit;
 ```
 6. Instalacion de apache server ( si hay instalado lighttpd deshabilitarlo `systemctl disable lighttpd` )
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno.
 ```
 apt -y install apache2
 apt -y install php libapache2-mod-php php-{gd,common,mail,mail-mime,mysql,pear,mbstring,xml,curl}
@@ -112,7 +118,6 @@ chown -R freerad:freerad /etc/freeradius/3.0/mods-enabled/sql
 chown -R www-data:www-data /var/www/html/daloradius/
 chmod 664 /var/www/html/daloradius/library/daloradius.conf.php
 ```
-
 
 ## Instalacion de Daloradius
 ```
@@ -181,6 +186,9 @@ grep -rl "84Pass@" /etc
 ```
 
 - Ahora cambiamos ese password `84Pass@` por la que nosotros decidamos `84Elij@` por ejemplo, en su caso coloca tu password elegido.
+> [!CAUTION]
+> El siguiente codigo copia linea a linea ya que tienes que cambiar datos.
+
 ```
 sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
 sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
@@ -189,15 +197,15 @@ sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
 
 ```
 
-
-
 - Reiniciar sistema e ingresar
 
 ```
 reboot
 ```
 
-- Checamos los servicios
+
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno para checar servicios.
 ```
 systemctl status apache2
 systemctl status freeradius
@@ -232,7 +240,8 @@ Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 ```
 
 - Para cambiarles el password a los scripts, recuerda que en vez de `84Elij@` necesitamos colocar el que elegimos.
-
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno ya que cambiaras a tu password
 
 ```
 sed -i 's/84Pass@/84Elij@/g' "/root/scripts/rmanual/limpiamanual.sh"
@@ -250,7 +259,6 @@ sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpiaPausados.sh"
 sed -i 's/84Pass@/84Elij@/g' "/root/scripts/radacct_trim.sh"
 ```
 
-
 Encontraremos tambien las configuracion para desplegar contenedores de unifi, omada, wireguard con pihole unbound.
 
 ### Acceso a daloradius
@@ -265,6 +273,10 @@ Despues de acceder, nos dirijimos a `http://IP/daloradius/config-operators.php` 
 
 ### Instalacion docker y docker compose
 Instalamos docker y docer compose en debian, necesarios para instalar en contenedores : unifi,omada,wireguard
+
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno
+
 ```
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -272,15 +284,23 @@ sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
 
-# Add the repository to Apt sources:
+- Agrega el repositorio de un solo golpe todo
+```
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
+```
+- Actualizamos repositorios
+```
 sudo apt-get update
+```
+> [!CAUTION]
+> El siguiente codigo lanzalo linea a linea osea uno a uno para instalar paquetes
 
+```
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -294,7 +314,7 @@ docker -v
 cd /root/docker/piwiunbound/
 cat docker-compose.yml
 ```
-Para cambiar el password y la Ip del servidor suponiendo que es 45.143.18.92
+Para cambiar el password y la Ip del servidor suponiendo que es `45.143.18.92`
 
 ```
 sed -i 's/84Pass@/84Elij@/g' "docker-compose.yml"
