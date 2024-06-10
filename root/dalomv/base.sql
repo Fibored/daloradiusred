@@ -747,7 +747,7 @@ CREATE TABLE `operators` (
 
 LOCK TABLES `operators` WRITE;
 /*!40000 ALTER TABLE `operators` DISABLE KEYS */;
-INSERT INTO `operators` VALUES (6,'administrator','admin','','','','','','','','','','','','','2024-01-08 21:59:30','2009-12-07 20:12:33','admin','2023-02-18 03:34:56','administrator'),(7,'Abdias','admin','Abdias','rivera','Admin','admin','','','','','','','','','2023-04-15 01:09:52','2023-01-12 05:53:08','administrator','2023-01-31 17:54:25','LuIs'),(8,'Luis','84/River@','','','','','','','','','','','','','2023-01-31 15:47:48','2023-01-12 05:53:36','administrator','2023-01-12 05:53:36','administrator'),(9,'Carlos','10/River@','Carlos','Rivera','','','','','','','','','','','2023-01-12 21:44:31','2023-01-12 21:14:12','Abdias','2023-01-12 21:14:12','Abdias');
+INSERT INTO `operators` VALUES (6,'administrator','84Uniq@','','','','','','','','','','','','','2024-01-08 21:59:30','2009-12-07 20:12:33','admin','2023-02-18 03:34:56','administrator'),(7,'Abdias','84Uniq@','Abdias','rivera','Admin','admin','','','','','','','','','2023-04-15 01:09:52','2023-01-12 05:53:08','administrator','2023-01-31 17:54:25','LuIs'),(8,'Luis','84/River@','','','','','','','','','','','','','2023-01-31 15:47:48','2023-01-12 05:53:36','administrator','2023-01-12 05:53:36','administrator'),(9,'Carlos','10/River@','Carlos','Rivera','','','','','','','','','','','2023-01-12 21:44:31','2023-01-12 21:14:12','Abdias','2023-01-12 21:14:12','Abdias');
 /*!40000 ALTER TABLE `operators` ENABLE KEYS */;
 UNLOCK TABLES;
 
