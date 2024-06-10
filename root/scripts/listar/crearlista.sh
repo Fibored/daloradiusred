@@ -2,7 +2,7 @@
 #set -x
 # Este script elimina fichas de hace 10 dias de uso, y tambien limpia las bases de datos de hace 30 dias.
 # Cambiar el password de tu DB
-SQLPASS="84Uniq@"
+SQLPASS="84Pass@"
 export MYSQL_PWD=$SQLPASS
 > /tmp/expired.users.txt
 > /root/scripts/listar/lista.txt

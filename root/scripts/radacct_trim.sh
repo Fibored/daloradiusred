@@ -3,7 +3,7 @@
 #set -x
 #MYSQL DETAILS
 SQLUSER="root"
-SQLPASS="84Uniq@"
+SQLPASS="84Pass@"
 DB="radius"
 Days="60"
 export MYSQL_PWD=$SQLPASS

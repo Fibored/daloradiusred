@@ -2,7 +2,7 @@
 #set -x
 # This script delets users who have expired 2 months ago. and then delete there records from all tables.
 # Syed Jahanzaib / June 2019
-SQLPASS="84Uniq@"
+SQLPASS="84Pass@"
 USER="ABC1"
 export MYSQL_PWD=$SQLPASS
 > /tmp/expired.users.txt

@@ -1,4 +1,4 @@
-## Instalacion Daloradius en debian 11 o debian 12
+## Instalacion Daloradius en debian 11
 1. Activar ipv6
 ```
 enable_ipv6
@@ -149,7 +149,7 @@ pear channel-update pear.php.net
 - Agregamos el password a nuestra base de datos, siendo `84Pass@` la default y `84Elij@` la elegida por ti.
 
 ```
-sed -i 's/84Pass@/84Elij@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
+sed -i 's/84Pass@/84Elij@/g' "/root/daloradiusred/root/dalomv/base.sql"
 ```
 - Restauramos base de datos
 
@@ -157,12 +157,6 @@ sed -i 's/84Pass@/84Elij@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
 mysql -p -u root radius < /root/daloradiusred/root/dalomv/base.sql
 ```
 
-- reiniciamos los servicios
-```
-systemctl restart apache2 freeradius
-systemctl status apache2
-systemctl status freeradius
-```
 
 - Darle permisos a carpetas log
 ```
@@ -176,11 +170,39 @@ chmod 644 /var/log/messages
 touch /tmp/daloradius.log
 ```
 
+
+- Modificamos los passwords de la base de datos en los scripts la cual por default es 84Pass@.
+podemos utilizar el siguiente comando para reemplazarlo por el password que elegistes ejemplo 84Elij@ .
+
+- Primero buscamos lo que queremos cambiar, anotamos los archivos donde se encuentra
+```
+grep -rl "84Pass@" /var
+grep -rl "84Pass@" /etc
+```
+
+- Ahora cambiamos ese password `84Pass@` por la que nosotros decidamos `84Elij@` por ejemplo, en su caso coloca tu password elegido.
+```
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
+sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/SimpleAuth.php"
+sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
+
+```
+
+
+
 - Reiniciar sistema e ingresar
 
 ```
 reboot
 ```
+
+- Checamos los servicios
+```
+systemctl status apache2
+systemctl status freeradius
+```
+
 - Ingresar a daloradius por la direccion `http://IP/daloradius` con usuario `administrator` y clave  `84Uniq@`
 _Si hay error de puertos Es necesario que se abran los puertos en el vps de administracion 1812,1813,3306,6813,80,8080,443_
 
@@ -203,55 +225,85 @@ Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 ```
 \mv /root/daloradiusred/root/scripts /root/scripts/
 \mv /root/daloradiusred/root/backupdb /root/backupdb/
-\mv /root/daloradiusred/docker /root/docker/
+\mv /root/daloradiusred/root/docker /root/docker/
 ```
 
-- Modificamos los passwords de la base de datos en los scripts la cual por default es 84Pass@.
-podemos utilizar el siguiente comando para reemplazarlo por el password que elegistes ejemplo 84Elij@ .
-
-- Primero buscamos lo que queremos cambiar, anotamos los archivos donde se encuentra
-```
-grep -rl "84Pass@" /var
-grep -rl "84Pass@" /etc
-```
-
-- Ahora cambiamos esa palabra por la que nosotros decidamos.
-```
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/daloradius/library/daloradius.conf.php"
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/index.php"
-sed -i 's/84Pass@/84Elij@/g' "/var/www/html/print/SimpleAuth.php"
-sed -i 's/84Pass@/84Elij@/g' "/etc/freeradius/3.0/mods-available/sql"
+- Para cambiarles el password a los scripts, recuerda que en vez de `84Elij@` necesitamos colocar el que elegimos.
 
 
-sed -i 's/84Uniq@/84Pass@/g' "/root/repos/daloradiusred/root/dalomv/base.sql"
 ```
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/rmanual/limpiamanual.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpiaCorridos.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpia7dCorridos.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/rmcreationdate.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/eliminabatch.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/rmuserinfofirst.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/removegroupname.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleaner/eliminadb.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/listar/crearlista.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/backupdbradius.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/cleanradpostauth.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/limpiaPausados.sh"
+sed -i 's/84Pass@/84Elij@/g' "/root/scripts/radacct_trim.sh"
+```
+
 
 Encontraremos tambien las configuracion para desplegar contenedores de unifi, omada, wireguard con pihole unbound.
 
 ### Acceso a daloradius
+
 ```
 Iniciar sesion
 WEB: IP/daloradius
 Usuario: administrator
-Pass: 84Uniq@
-### Acceso a wireguard
-Acceso = http://IP:51821/
-password = 84Uniq
+Pass: 84Pass@
+```
+Despues de acceder, nos dirijimos a `http://IP/daloradius/config-operators.php` para cambiar el password y usuarios.
+
+### Instalacion docker y docker compose
+Instalamos docker y docer compose en debian, necesarios para instalar en contenedores : unifi,omada,wireguard
+```
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose -v
+docker -v
 ```
 
 ### Instalacion wireguard pihole unbound
 - Entramos a la carpeta y editamos el archivo de configuracion
 ```
 cd /root/docker/piwiunbound/
-nano docker-compose.yml
+cat docker-compose.yml
+```
+Para cambiar el password y la Ip del servidor suponiendo que es 45.143.18.92
+
+```
+sed -i 's/84Pass@/84Elij@/g' "docker-compose.yml"
+sed -i 's/MyIpServer/45.143.18.92/g' "docker-compose.yml"
 ```
 
-En este caso solo cambiaremos el password de acceso de wireguard y pihole, asi como la ip de nuestro servidor, en las lineas.
+En este caso solo cambiaremos el password de acceso de wireguard y pihole, asi como la ip de nuestro servidor, quedaria..
 ```
- - WG_HOST=45.234.34.54
- - PASSWORD=84Uniq@
+ - WG_HOST=45.143.18.92
+ - PASSWORD=84Elij@
 
-WEBPASSWORD: "84Uniq@"
+WEBPASSWORD: "84Elij@"
 ```
 
 Guardamos los cambios y ejecutamos el contenedor, teniendo ya instalado docker y docker compose.
@@ -259,16 +311,52 @@ Guardamos los cambios y ejecutamos el contenedor, teniendo ya instalado docker y
 docker-compose up -d
 ```
 
+### Acceso wireguard
 ```
+Acceso ip: 45.143.18.92:51821
+Password: 84Elij@
+```
+Alli mismo creamos los usuarios para wireguard.
 
 ### Acceso pihole
 Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
 ```
 acceso = 10.2.0.100/admin
-password= 84Uniq@
+password= 84Elij@
+```
+### Istalando omada
+- Entramos a la carpeta y editamos el archivo de configuracion
+```
+cd /root/docker/omada/
+cat docker-compose.yml
+
 ```
 
-- Respaldo carpeta html completa
+Ejecutamos el contenedor, teniendo ya instalado docker y docker compose.
+```
+docker-compose up -d
+```
+Accedemos con
+```
+Acceso: https://IP:8043/
+```
+### Instalando unifi
+- Entramos a la carpeta y editamos el archivo de configuracion
+```
+cd /root/docker/unifi/
+cat docker-compose.yml
+
+```
+
+Ejecutamos el contenedor, teniendo ya instalado docker y docker compose.
+```
+docker-compose up -d
+```
+Accedemos con
+```
+Acceso: https://IP:8443/
+```
+### Respaldo carpeta html completa
 ```
 cd /var/www
 tar -zcvf html.tar.gz html

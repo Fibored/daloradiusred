@@ -22,8 +22,8 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=45.136.18.92
-      - PASSWORD=84Uniq@
+      - WG_HOST=MyIpServer
+      - PASSWORD=84Pass@
       - WG_PORT=51820
       - WG_DEFAULT_ADDRESS=10.6.0.x
       - WG_DEFAULT_DNS=10.2.0.100
@@ -71,14 +71,15 @@ services:
       - 10.2.0.200 # Points to unbound
     environment:
       TZ: "America/Monterrey"
-      WEBPASSWORD: "84Uniq@" # Blank password - Can be whatever you want.
+      WEBPASSWORD: "84Pass@" # Blank password - Can be whatever you want.
       ServerIP: 10.2.0.100 # Internal IP of pihole
       DNS1: 10.2.0.200 # Unbound IP
       DNS2: 10.2.0.200 # If we don't specify two, it will auto pick google.
     # Volumes store your data between container upgrades
     volumes:
-      - "./etc-pihole/:/etc/pihole/"
-      - "./etc-dnsmasq.d/:/etc/dnsmasq.d/"
+      - "./etc-pihole:/etc/pihole"
+      #- "./etc-pihole/:/etc/pihole/"
+      - "./etc-dnsmasq.d:/etc/dnsmasq.d"
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:

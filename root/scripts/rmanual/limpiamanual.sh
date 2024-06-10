@@ -1,7 +1,7 @@
 #!/bin/sh
 #set -x
 # Syed Jahanzaib / June 2019
-SQLPASS="84Uniq@"
+SQLPASS="84Pass@"
 export MYSQL_PWD=$SQLPASS
 #> /tmp/expired.users.txt
 
