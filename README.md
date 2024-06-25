@@ -312,49 +312,6 @@ docker-compose -v
 docker -v
 ```
 
-### Instalacion wireguard pihole unbound
-- Entramos a la carpeta y editamos el archivo de configuracion
-```
-cd /root/docker/piwiunbound/
-cat docker-compose.yml
-```
-- Para cambiar el password y la Ip del servidor suponiendo que es `45.143.18.92`
-
-```
-passwd="84Elij@"
-sed -i "s/84Pass@/$passwd/g" "docker-compose.yml"
-```
-- Para el servidor o ip cambialo.
-```
-sed -i 's/MyIpServer/45.143.18.92/g' "docker-compose.yml"
-```
-
-En este caso solo cambiaremos el password de acceso de wireguard y pihole, asi como la ip de nuestro servidor, quedaria..
-```
- - WG_HOST=45.143.18.92
- - PASSWORD=84Elij@
-
-WEBPASSWORD: "84Elij@"
-```
-
-Guardamos los cambios y ejecutamos el contenedor, teniendo ya instalado docker y docker compose.
-```
-docker-compose up -d
-```
-
-### Acceso wireguard
-```
-Acceso ip: 45.143.18.92:51821
-Password: 84Elij@
-```
-Alli mismo creamos los usuarios para wireguard.
-
-### Acceso pihole
-Habiendo creado una llave desde wireguard y conectado ya sea el celular o pc, acceder a 
-```
-acceso = 10.2.0.100/admin
-password= 84Elij@
-```
 ### Istalando omada
 - Entramos a la carpeta y editamos el archivo de configuracion
 ```
@@ -387,6 +344,128 @@ Accedemos con
 ```
 Acceso: https://IP:8443/
 ```
+### Instalacion Wireguard pihole unbound
+1. Instalamos pihole
+```
+curl -sSL https://install.pi-hole.net | bash
+```
+2. Cambiamos el password
+```
+pihole -a -p
+```
+3. Desactivamos lighttpd para no hacer conflicto con otro
+```
+sudo systemctl disable lighttpd
+```
+4. Instalamos pivpn
+```
+curl -L https://install.pivpn.io | bash
+```
+5. Instalamos unbound
+```
+sudo apt install unbound
+```
+6. lanzamos la siguiente linea
+```
+wget https://www.internic.net/domain/named.root -qO- | sudo tee /var/lib/unbound/root.hints
+```
+7. Editamos el archivo siguiente
+```
+sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
+```
+7.1. Le agregamos lo siguiente
+```
+server:
+    # If no logfile is specified, syslog is used
+    # logfile: "/var/log/unbound/unbound.log"
+    verbosity: 0
+
+    interface: 127.0.0.1
+    port: 5335
+    do-ip4: yes
+    do-udp: yes
+    do-tcp: yes
+
+    # May be set to yes if you have IPv6 connectivity
+    do-ip6: no
+
+    # You want to leave this to no unless you have *native* IPv6. With 6to4 and
+    # Terredo tunnels your web browser should favor IPv4 for the same reasons
+    prefer-ip6: no
+
+    # Use this only when you downloaded the list of primary root servers!
+    # If you use the default dns-root-data package, unbound will find it automatically
+    #root-hints: "/var/lib/unbound/root.hints"
+
+    # Trust glue only if it is within the server's authority
+    harden-glue: yes
+
+    # Require DNSSEC data for trust-anchored zones, if such data is absent, the zone becomes BOGUS
+    harden-dnssec-stripped: yes
+
+    # Don't use Capitalization randomization as it known to cause DNSSEC issues sometimes
+    # see https://discourse.pi-hole.net/t/unbound-stubby-or-dnscrypt-proxy/9378 for further details
+    use-caps-for-id: no
+
+    # Reduce EDNS reassembly buffer size.
+    # Suggested by the unbound man page to reduce fragmentation reassembly problems
+    edns-buffer-size: 1472
+
+    # Perform prefetching of close to expired message cache entries
+    # This only applies to domains that have been frequently queried
+    prefetch: yes
+
+    # One thread should be sufficient, can be increased on beefy machines. In reality for most users running on small networks or on a single machine, it should be unnecessary to seek performance enhancement by increasing num-threads above 1.
+    num-threads: 1
+
+    # Ensure kernel buffer is large enough to not lose messages in traffic spikes
+    so-rcvbuf: 1m
+
+    # Ensure privacy of local IP ranges
+    private-address: 192.168.0.0/16
+    private-address: 169.254.0.0/16
+    private-address: 172.16.0.0/12
+    private-address: 10.0.0.0/8
+    private-address: fd00::/8
+    private-address: fe80::/10
+```
+7.1.2. Reiniciamos el servicio
+```
+sudo service unbound restart
+```
+
+8. Creamos un usuario
+```
+pivpn -a
+```
+8.1 Lo convertimos a codigo qr para usarlo en el celular
+```
+pivpn -qr
+```
+8.1 Con esto puedes ver la ip de tu dns
+```
+ip a show dev wg0
+```
+9. Editamos el archivo setupVars.conf
+```
+nano /etc/pihole/setupVars.conf
+```
+9.1 cambia los datos de estas lineas
+```
+PIHOLE_INTERFACE=wg0
+LIGHTTPD_ENABLED=false
+PIHOLE_DNS_1=127.0.0.1#5335
+PIHOLE_DNS_2=127.0.0.1#5335
+```
+
+10. Reiniciamos
+```
+reboot
+```
+10.1 Checar si hay algun conflicto de puerto
+```
+netstat -ltnp | grep :80
+
 ### Respaldo carpeta html completa
 ```
 cd /var/www
