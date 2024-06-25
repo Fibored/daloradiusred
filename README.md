@@ -373,7 +373,7 @@ wget https://www.internic.net/domain/named.root -qO- | sudo tee /var/lib/unbound
 ```
 sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
 ```
-7.1. Le agregamos lo siguiente
+7.1 Le agregamos lo siguiente
 ```
 server:
     # If no logfile is specified, syslog is used
@@ -429,7 +429,7 @@ server:
     private-address: fd00::/8
     private-address: fe80::/10
 ```
-7.1.2. Reiniciamos el servicio
+7.2 Reiniciamos el servicio
 ```
 sudo service unbound restart
 ```
@@ -442,7 +442,7 @@ pivpn -a
 ```
 pivpn -qr
 ```
-8.1 Con esto puedes ver la ip de tu dns
+8.2 Con esto puedes ver la ip de tu dns
 ```
 ip a show dev wg0
 ```
