@@ -465,7 +465,7 @@ reboot
 10.1 Checar si hay algun conflicto de puerto
 ```
 netstat -ltnp | grep :80
-
+```
 ### Respaldo carpeta html completa
 ```
 cd /var/www
