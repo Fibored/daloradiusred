@@ -351,6 +351,7 @@ apt install sudo dnsutils curl -y
 wget -O wireguard.sh https://get.vpnsetup.net/wg
 sudo bash wireguard.sh --auto
 ```
+- colocarle los dns 10.7.0.1 al peer del cliente
 - Si se desean mas clientes, relanzar el script , los datos de los clientes se encuentran en  /root/
 ```
 apt install -y unbound
