@@ -1,4 +1,4 @@
-## Instalacion Daloradius en debian 11 +Pihole+Unbound+Wireguard
+## Instalacion Daloradius en debian 12 + AdGuardHome + Unbound
 1. Activar ipv6
 ```
 enable_ipv6
