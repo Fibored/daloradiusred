@@ -464,6 +464,7 @@ reboot
 ```
 10.1 Checar si hay algun conflicto de puerto
 ```
+sudo apt install net-tools
 netstat -ltnp | grep :80
 ```
 ### Respaldo carpeta html completa
