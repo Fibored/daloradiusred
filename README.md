@@ -344,130 +344,137 @@ Accedemos con
 ```
 Acceso: https://IP:8443/
 ```
-### Instalacion Wireguard pihole unbound
-1. Instalamos pihole
+### Instalacion Wireguard Adguardhome unbound
 ```
-curl -sSL https://install.pi-hole.net | bash
+apt update
+apt install sudo dnsutils curl -y
+wget -O wireguard.sh https://get.vpnsetup.net/wg
+sudo bash wireguard.sh --auto
 ```
-2. Cambiamos el password
+- Si se desean mas clientes, relanzar el script , los datos de los clientes se encuentran en  /root/
 ```
-pihole -a -p
+apt install -y unbound
+
+nano /etc/unbound/unbound.conf.d/config.conf
 ```
-3. Desactivamos lighttpd para no hacer conflicto con otro
-```
-sudo systemctl disable lighttpd
-```
-4. Instalamos pivpn
-```
-curl -L https://install.pivpn.io | bash
-```
-5. Instalamos unbound
-```
-sudo apt install unbound
-```
-6. lanzamos la siguiente linea
-```
-wget https://www.internic.net/domain/named.root -qO- | sudo tee /var/lib/unbound/root.hints
-```
-7. Editamos el archivo siguiente
-```
-sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
-```
-7.1 Le agregamos lo siguiente
+--------------------- add
 ```
 server:
-    # If no logfile is specified, syslog is used
-    # logfile: "/var/log/unbound/unbound.log"
-    verbosity: 0
+  interface: 127.0.0.1
+  port: 5335
 
-    interface: 127.0.0.1
-    port: 5335
-    do-ip4: yes
-    do-udp: yes
-    do-tcp: yes
+  # IPv4 / IPv6-settings
+  do-ip6: no
+  do-ip4: yes
+  do-udp: yes
 
-    # May be set to yes if you have IPv6 connectivity
-    do-ip6: no
+  # Set number of threads to use
+  num-threads: 1
 
-    # You want to leave this to no unless you have *native* IPv6. With 6to4 and
-    # Terredo tunnels your web browser should favor IPv4 for the same reasons
-    prefer-ip6: no
+  # Hide DNS Server info
+  hide-identity: yes
+  hide-version: yes
 
-    # Use this only when you downloaded the list of primary root servers!
-    # If you use the default dns-root-data package, unbound will find it automatically
-    #root-hints: "/var/lib/unbound/root.hints"
+  # Limit DNS Fraud and use DNSSEC
+  harden-glue: yes
+  harden-dnssec-stripped: yes
+  harden-referral-path: yes
+  use-caps-for-id: yes
+  harden-algo-downgrade: yes
+  qname-minimisation: yes
 
-    # Trust glue only if it is within the server's authority
-    harden-glue: yes
+  # Add an unwanted reply threshold to clean the cache and avoid when possible a DNS Poisoning
+  unwanted-reply-threshold: 10000000
 
-    # Require DNSSEC data for trust-anchored zones, if such data is absent, the zone becomes BOGUS
-    harden-dnssec-stripped: yes
+  # Minimum lifetime of cache entries in seconds (4min)
+  cache-min-ttl: 240
 
-    # Don't use Capitalization randomization as it known to cause DNSSEC issues sometimes
-    # see https://discourse.pi-hole.net/t/unbound-stubby-or-dnscrypt-proxy/9378 for further details
-    use-caps-for-id: no
+  # Maximum lifetime of cached entries (4hour)
+  cache-max-ttl: 14400
 
-    # Reduce EDNS reassembly buffer size.
-    # Suggested by the unbound man page to reduce fragmentation reassembly problems
-    edns-buffer-size: 1472
+  # Prefetch
+  prefetch: yes
+  prefetch-key: yes
 
-    # Perform prefetching of close to expired message cache entries
-    # This only applies to domains that have been frequently queried
-    prefetch: yes
+  # Optimisations
+  msg-cache-slabs: 8
+  rrset-cache-slabs: 8
+  infra-cache-slabs: 8
+  key-cache-slabs: 8
 
-    # One thread should be sufficient, can be increased on beefy machines. In reality for most users running on small networks or on a single machine, it should be unnecessary to seek performance enhancement by increasing num-threads above 1.
-    num-threads: 1
+  # Increase memory size of the cache
+  rrset-cache-size: 256m
+  msg-cache-size: 128m
 
-    # Ensure kernel buffer is large enough to not lose messages in traffic spikes
-    so-rcvbuf: 1m
+  # Private addresses (RFC 1918)
+  private-address: 192.168.0.0/16
+  private-address: 169.254.0.0/16
+  private-address: 172.16.0.0/12
+  private-address: 10.0.0.0/8
+  private-address: fd00::/8
+  private-address: fe80::/10
+  # Experemetal
+  private-address: 127.0.0.0/8
+  private-address: ::ffff:0:0/96
 
-    # Ensure privacy of local IP ranges
-    private-address: 192.168.0.0/16
-    private-address: 169.254.0.0/16
-    private-address: 172.16.0.0/12
-    private-address: 10.0.0.0/8
-    private-address: fd00::/8
-    private-address: fe80::/10
+remote-control:
+  # enable remote-control
+  control-enable: no
 ```
-7.2 Reiniciamos el servicio
+-----------------------------------
 ```
-sudo service unbound restart
-```
-
-8. Creamos un usuario
-```
-pivpn -a
-```
-8.1 Lo convertimos a codigo qr para usarlo en el celular
-```
-pivpn -qr
-```
-8.2 Con esto puedes ver la ip de tu dns
-```
-ip a show dev wg0
-```
-9. Editamos el archivo setupVars.conf
-```
-nano /etc/pihole/setupVars.conf
-```
-9.1 cambia los datos de estas lineas
-```
-PIHOLE_INTERFACE=wg0
-LIGHTTPD_ENABLED=false
-PIHOLE_DNS_1=127.0.0.1#5335
-PIHOLE_DNS_2=127.0.0.1#5335
+curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v
 ```
 
-10. Reiniciamos
+- go to http://IP:3000
+- configuralo default dns 127.0.0.1:5335 tipo Parallel , cache 0
+```
+sudo apt-get install resolvconf -y && sudo systemctl restart unbound-resolvconf.service
+wget -O root.hints https://www.internic.net/domain/named.root && sudo mv root.hints /var/lib/unbound/
+```
+
+```
+nano /opt/AdGuardHome/AdGuardHome.yaml
+```
+
+- Cambia puerto 80 por 8081
+```
+address: 0.0.0.0:8081
+```
+
+- Nueva ip go to http://IP:8081
+```
+reboot
+
+ping -c 3 google.com
+```
+
+```
+cat /etc/resolv.conf
+```
+
+
+
+- checa si se encuentra / si no ,agrega lo siguiente
+
+```
+nameserver 127.0.0.1
+```
+
+-Reiniciamos
+
 ```
 reboot
 ```
-10.1 Checar si hay algun conflicto de puerto
+
+- Checar si hay algun conflicto de puerto
 ```
 sudo apt install net-tools
 netstat -ltnp | grep :80
 ```
+
 ### Respaldo carpeta html completa
+
 ```
 cd /var/www
 tar -zcvf html.tar.gz html
