@@ -304,9 +304,13 @@ Instalamos docker y docer compose en debian, necesarios para instalar en contene
 ```
 # Add Docker's official GPG key:
 sudo apt-get update
+
 sudo apt-get install ca-certificates curl gnupg
+
 sudo install -m 0755 -d /etc/apt/keyrings
+
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
 
@@ -326,8 +330,11 @@ sudo apt-get update
 
 ```
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+#
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#
 sudo chmod +x /usr/local/bin/docker-compose
+#
 docker-compose -v
 docker -v
 ```
