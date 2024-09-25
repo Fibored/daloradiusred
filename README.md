@@ -264,6 +264,9 @@ Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
 
 ```
 passwd="84Elij@"
+```
+
+```
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/rmanual/limpiamanual.sh"
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpiaCorridos.sh"
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpia7dCorridos.sh"
