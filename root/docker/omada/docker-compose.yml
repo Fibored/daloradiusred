@@ -1,8 +1,9 @@
 version: '3.3'
+
 services:
   omada-controller:
     container_name: omada-controller
-    image: 'mbentley/omada-controller:latest'
+    image: mbentley/omada-controller:5.13.30.8
     restart: unless-stopped
     network_mode: bridge
     ports:
@@ -34,10 +35,12 @@ services:
       - TZ=America/Mexico_City
       - TLS_1_11_ENABLED=true
     volumes:
-      - omada-data:/opt/tplink/EAPController/data
-      - omada-logs:/opt/tplink/EAPController/logs
-      - omada-work:/opt/tplink/EAPController/work'
-      - omada-cert:/cert'
+      - /root/omada/omada-data:/opt/tplink/EAPController/data
+      - /root/omada/omada-logs:/opt/tplink/EAPController/logs
+      - /root/omada/omada-work:/opt/tplink/EAPController/work
+      - /root/omada/omada-cert:/cert
+
+
 volumes:
   omada-data:
   omada-logs:
