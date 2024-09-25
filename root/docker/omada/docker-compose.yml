@@ -35,10 +35,10 @@ services:
       - TZ=America/Mexico_City
       - TLS_1_11_ENABLED=true
     volumes:
-      - /root/omada/omada-data:/opt/tplink/EAPController/data
-      - /root/omada/omada-logs:/opt/tplink/EAPController/logs
-      - /root/omada/omada-work:/opt/tplink/EAPController/work
-      - /root/omada/omada-cert:/cert
+      - /root/docker/omada/omada-data:/opt/tplink/EAPController/data
+      - /root/docker/omada/omada-logs:/opt/tplink/EAPController/logs
+      - /root/docker/omada/omada-work:/opt/tplink/EAPController/work
+      - /root/docker/omada/omada-cert:/cert
 
 
 volumes:
