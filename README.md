@@ -44,6 +44,9 @@ apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
 _Terminada de instalar la clave agregamos un repositorio si estamos en debian 11, para **debian 12** no es necesario_
 ```
 add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mirror.rackspace.com/mariadb/repo/10.5/debian bullseye main'
+
+## Para eliminar el repositorio
+# rm -r /etc/apt/sources.list.d/archive_uri-https_mirror_rackspace_com_mariadb_repo_10_5_debian-bookworm.list
 ```
 _Actualizamos el Sistema_
 ```
