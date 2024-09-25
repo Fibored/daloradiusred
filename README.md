@@ -67,7 +67,12 @@ mysql_secure_installation
 ```
 Te apareceran algunas opciones de configuracion.
 ```
-# enter
+#n
+#n
+#y
+#n
+#y
+#y
 # Disallow root login remotely? [Y/n] n
 # password usada aqui es 84Pass@ ,utiliza el tuyo, recuerda cuando veas 84Pass@ cambiarlo.
 ```
