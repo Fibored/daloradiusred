@@ -1,4 +1,4 @@
-## Instalacion Daloradius en debian 12 + AdGuardHome + Unbound
+## Instalacion Daloradius en debian 12 + Omada + Unifi + Wireguard + Unbound DNS + AdGuardHome
 1. Activar ipv6
 ```
 enable_ipv6
