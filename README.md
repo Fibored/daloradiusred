@@ -205,15 +205,17 @@ grep -rl "84Pass@" /etc
 > [!CAUTION]
 > El siguiente codigo copia linea a linea ya que tienes que cambiar datos.
 
+- Cambia **84Elij@** por el password usado
 ```
 passwd="84Elij@"
+```
+
+```
 sed -i "s/84Pass@/$passwd/g" "/var/www/html/daloradius/library/daloradius.conf.php"
 sed -i "s/84Pass@/$passwd/g" "/var/www/html/print/index.php"
 sed -i "s/84Pass@/$passwd/g" "/var/www/html/print/SimpleAuth.php"
 sed -i "s/84Pass@/$passwd/g" "/etc/freeradius/3.0/mods-available/sql"
-
 ```
-
 - Reiniciar sistema e ingresar
 
 ```
