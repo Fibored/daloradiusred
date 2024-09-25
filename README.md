@@ -1,5 +1,8 @@
 ## Instalacion Daloradius en debian 12 + Omada + Unifi + Wireguard + Unbound DNS + AdGuardHome
-1. Activar ipv6
+
+> [!CAUTION]
+> Este punto puede **omitirse**..........
+- Activar ipv6
 ```
 enable_ipv6
 sysctl -p
@@ -12,7 +15,7 @@ systemctl stop lighttpd.service
 systemctl disable lighttpd.service
 ```
 
-2. Permitimos el acceso al vps con password
+- Permitimos el acceso al vps con password
 _Abrimos el archivo a modificar con nano_
 ```
 nano /etc/ssh/sshd_config
@@ -22,7 +25,7 @@ _Dejamos las siguientes lineas a yes_
 PermitRootLogin yes
 PasswordAuthentication yes
 ```
-3. Elegimos una clave para nuestro usuario root y reiniciamos los servicios
+- Elegimos una clave para nuestro usuario root y reiniciamos los servicios
 ```
 passwd root
 ```
@@ -31,7 +34,9 @@ _Despues de cambiar nuestro password,reiniciamos los servicios_
 service ssh restart
 systemctl restart sshd
 ```
-4. Instalamos algunos paquetes necesarios para daloradius
+
+## Instalacion Daloradius inicia instalacion.
+- Instalamos algunos paquetes necesarios para daloradius
 ```
 apt -y install software-properties-common gnupg2 dirmngr git wget zip unzip sudo -y
 ```
@@ -52,7 +57,7 @@ _Actualizamos el Sistema_
 ```
 apt -y update
 ```
-5. Instalacion de Mariadb.
+- Instalacion de Mariadb.
 > [!CAUTION]
 > El siguiente codigo lanzalo linea a linea osea uno a uno.
 ```
@@ -76,7 +81,7 @@ GRANT ALL ON radius.* TO radius@localhost IDENTIFIED BY "84Pass@";
 FLUSH PRIVILEGES;
 quit;
 ```
-6. Instalacion de apache server ( si hay instalado lighttpd deshabilitarlo `systemctl disable lighttpd` )
+- Instalacion de apache server ( si hay instalado lighttpd deshabilitarlo `systemctl disable lighttpd` )
 > [!CAUTION]
 > El siguiente codigo lanzalo linea a linea osea uno a uno.
 ```
@@ -87,7 +92,7 @@ systemctl enable --now freeradius.service
 mysql -u root -p radius < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
 ```
-7. Instalacion de Daloradius
+- Instalacion de Daloradius
 - Clonamos este repositorio para usar sus carpetas.
 
 ```
@@ -224,7 +229,7 @@ sed -i 's/Rivera/Myusuario/g' "/var/www/html/daloradius/login.php"
 ```
 _Si hay error de puertos Es necesario que se abran los puertos en el vps de administracion 1812,1813,3306,6813,80,8080,443_
 
-8. Agregando scripts y crontab para mantenimiento.
+- Agregando scripts y crontab para mantenimiento.
 ```
 crontab -e
 ```
