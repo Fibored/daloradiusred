@@ -249,6 +249,7 @@ Agregamos las siguientes lineas
 0 20 * * * sudo bash /root/scripts/limpiaCorridos.sh
 #limpieza de fichas usadas vigencia de 11 dias elegida en el script
 0 22 * * * sudo bash /root/scripts/limpiaPausados.sh
+*/5  * * * * sudo bash /root/scripts/NAS-Reboot.sh
 ```
 
 Guardamos el archivo, y ahora movemos la carpeta de los scripts a /root
@@ -280,6 +281,7 @@ sed -i "s/84Pass@/$passwd/g" "/root/scripts/backupdbradius.sh"
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/cleanradpostauth.sh"
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/limpiaPausados.sh"
 sed -i "s/84Pass@/$passwd/g" "/root/scripts/radacct_trim.sh"
+sed -i "s/84Pass@/$passwd/g" "/root/scripts/NAS-Reboot.sh"
 ```
 
 
