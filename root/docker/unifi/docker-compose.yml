@@ -9,7 +9,7 @@ services:
     #  - MEM_LIMIT=1024 #optional
     #  - MEM_STARTUP=1024 #optional
     volumes:
-      - /home/docker/unifi:/config
+      - /root/docker/unifi:/config
     ports:
       - 8443:8443
       - 3478:3478/udp
