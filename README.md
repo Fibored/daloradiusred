@@ -298,7 +298,16 @@ Pass: 84Elij@
 Despues de acceder, nos dirijimos a `http://IP/daloradius/config-operators.php` para cambiar el password y usuarios.
 
 ### Instalacion docker y docker compose
-Instalamos docker y docer compose en debian, necesarios para instalar en contenedores : unifi,omada,wireguard
+Instalamos docker y docker-compose en debian, necesarios para instalar en contenedores : unifi,omada
+## Forma 1 por medio de Script automatico
+```
+apt install sudo -y
+# Despues descargamos el script
+wget https://raw.githubusercontent.com/Fibored/daloradiusred/refs/heads/main/docker-install.sh
+# Lanzamos la ejecucion del script
+sudo bash docker-install.sh
+```
+## Forma 2 Introduciendo de forma manual los comandos.
 
 > [!CAUTION]
 > El siguiente codigo lanzalo linea a linea osea uno a uno
